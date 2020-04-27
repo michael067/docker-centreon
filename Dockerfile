@@ -27,6 +27,12 @@ RUN \
   systemctl enable centengine &&\
   systemctl enable centreon &&\
   systemctl enable mariadb
+  
+  systemctl restart mariadb
+  systemctl restart httpd24-httpd
+  systemctl restart rh-php72-php-fpm
+  systemctl restart snmpd
+  systemctl restart snmptrapd
 
 # Install s6-overlay
 #ENV S6_VERSION "v1.21.2.1"
