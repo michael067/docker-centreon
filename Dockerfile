@@ -2,13 +2,13 @@ FROM centos:7
 
 ENV \
     LANG=C.UTF-8 \
-    S6_BEHAVIOUR_IF_STAGE2_FAILS=2
+#    S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 # Centreon
 RUN \
   yum install -y wget &&\
   yum install -y centos-release-scl &&\
-  yum install -y http://yum.centreon.com/standard/19.10/el7/stable/noarch/RPMS/centreon-release-19.10-1.el7.centos.noarch.rpm &&\
+  yum install -y --nogpgcheck http://yum.centreon.com/standard/20.04/el7/stable/noarch/RPMS/centreon-release-20.04-1.el7.centos.noarch.rpm &&\
   yum install -y centreon &&\
   yum clean all
 
@@ -21,7 +21,7 @@ RUN \
   systemctl enable snmpd &&\
   systemctl enable snmptrapd &&\
   systemctl enable rh-php72-php-fpm &&\
-  systemctl enable centcore &&\
+  systemctl enable gorgoned &&\
   systemctl enable centreontrapd &&\
   systemctl enable cbd &&\
   systemctl enable centengine &&\
@@ -29,13 +29,13 @@ RUN \
   systemctl enable mariadb
 
 # Install s6-overlay
-ENV S6_VERSION "v1.21.2.1"
-RUN curl -Lo /tmp/s6-overlay-amd64.tar.gz "https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/s6-overlay-amd64.tar.gz" &&\
-    tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude="./bin" --exclude="./sbin" &&\
-    tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin
-
-COPY root /
-RUN systemctl enable s6-overlay
+#ENV S6_VERSION "v1.21.2.1"
+#RUN curl -Lo /tmp/s6-overlay-amd64.tar.gz "https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/s6-overlay-amd64.tar.gz" &&\
+#    tar xzf /tmp/s6-overlay-amd64.tar.gz -C / --exclude="./bin" --exclude="./sbin" &&\
+#    tar xzf /tmp/s6-overlay-amd64.tar.gz -C /usr ./bin
+#
+#COPY root /
+#RUN systemctl enable s6-overlay
 
 # Manage persistant data
 #RUN \
